@@ -39,7 +39,7 @@ create table if not exists pharmacy.suppliers (
     supplier_id       serial        primary key,
     company_name      varchar(100)  not null,
     email             varchar(120)  unique not null,
-    phone             varchar(30)   not null  -- Сразу сделали varchar(30) по диаграмме
+    phone             varchar(30)   not null  
 );
 
 create table if not exists pharmacy.medicines (
@@ -51,7 +51,7 @@ create table if not exists pharmacy.medicines (
     is_prescription_required boolean
 );
 
--- ИСПРАВЛЕНО: Добавлена связь с MEDICINES (medicine_id) по диаграмме
+
 create table if not exists pharmacy.prescriptions (
     prescription_id  serial  primary key,
     doctor_id        int     not null references pharmacy.doctors(doctor_id) on delete restrict,
@@ -102,7 +102,7 @@ alter table pharmacy.doctors add constraint uq_doctor_license unique (license_nu
 
 alter table pharmacy.clients add constraint uq_client_email unique (email);
 
--- ИСПРАВЛЕНО: Добавлено ограничение на проверку дат рецепта из диаграммы
+
 alter table pharmacy.prescriptions add constraint check_expiry_after_issue check (expiry_date > issue_date);
 
 -- ============================================================================
@@ -153,7 +153,7 @@ insert into pharmacy.medicines (medicine_name, active_ingredient, base_price, is
 ('Linex Caps',         'Lactobacillus',           2900.00,   false),
 ('Analgin',            'Metamizole sodium',        100.00,   false);
 
--- ИСПРАВЛЕНО: В подзапросы добавлен ID лекарства, на которое выписан рецепт
+
 insert into pharmacy.prescriptions (doctor_id, client_id, medicine_id, issue_date, expiry_date) values
 ((select doctor_id from pharmacy.doctors where license_number = 'LIC-300400'), (select client_id from pharmacy.clients where email = 'maria@example.kz'), (select medicine_id from pharmacy.medicines where medicine_name = 'Amoxiclav 1000'), '2026-02-10', '2026-03-10'),
 ((select doctor_id from pharmacy.doctors where license_number = 'LIC-700800'), (select client_id from pharmacy.clients where email = 'elena@example.kz'), (select medicine_id from pharmacy.medicines where medicine_name = 'Losartan Richter'), '2026-03-01', '2026-04-01'),
