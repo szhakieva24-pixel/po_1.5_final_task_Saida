@@ -1,7 +1,6 @@
 -- ============================================================================
 -- DATABASE: pharmacy_db | SCHEMA: pharmacy
 -- Domain: Pharmacy management system — medicines, clients, prescriptions, sales
--- Run instructions: Execute in psql or pgAdmin in a clean pharmacy_db database
 -- ============================================================================
 
 create schema if not exists pharmacy;
